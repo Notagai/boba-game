@@ -1,0 +1,354 @@
+#arf {
+    font-family: 'Space Mono', monospace;
+    font-size: clamp(3rem, 10vw, 10rem);
+    color: #db9b24;
+    padding: 0rem clamp(1rem, 2vw, 3rem);
+    border-radius: clamp(0.4rem, 0.75vw, 1rem);
+    float: middle;
+    text-align: center;
+    transition: 1s;
+}
+
+#arf:hover {
+    background-color: #ffd079;
+    color: #bd851d;
+    transition: 1s;
+}
+
+html,
+body {
+    background-color: #ffdb9a;
+    font-family: 'Momo Trust Sans', sans-serif;
+    padding: 0px;
+}
+
+.momo-trust-sans {
+    font-family: "Momo Trust Sans", sans-serif;
+    font-optical-sizing: auto;
+    font-weight: 500;
+    font-style: normal;
+}
+
+p,
+button {
+    color: #bd851d;
+    font-size: 1.5rem;
+    margin-left: 2rem !important;
+    margin: 1rem;
+}
+
+h4 {
+    color: #bd851d;
+    font-size: 1rem;
+    margin-left: 2rem !important;
+    margin: 1rem;
+}
+
+h3 {
+    color: #ffd079;
+    margin-left: 2rem;
+    padding: 5px
+}
+
+#top {
+    background-color: #bd851d;
+    border-radius: 3px;
+    margin: 0 auto;
+    align-items: center;
+    padding: 0.5rem;
+}
+
+button {
+    background-color: #ffd079;
+    border: none;
+    padding: 1rem 2rem;
+    border-radius: 0.5rem;
+    cursor: pointer;
+    font-family: "Momo Trust Sans", sans-serif;
+    transition: transform 0.15s ease;
+}
+
+/* like not squish thing? unsquish whatever idgaf */
+button:hover {
+    transform: scale(1.1);
+}
+
+/* squish */
+button:active {
+    animation: bounceIn 0.2s ease;
+}
+
+@keyframes bounceIn {
+    0% {
+        transform: scale(0.9);
+    }
+
+    50% {
+        transform: scale(1.05);
+    }
+
+    100% {
+        transform: scale(1);
+    }
+}
+
+#sell,
+#sellDesc,
+#mark,
+#markDesc,
+#winmsg,
+#firstAd {
+    display: none;
+}
+
+#winmsg {
+    color: #db9b24;
+    font-size: 2rem;
+    text-align: center;
+    margin-top: 2rem;
+}
+
+.progress-container {
+    width: 90vw;
+    background-color: #ffd079;
+    border-radius: 5px;
+    overflow: hidden;
+    margin: 10px auto;
+}
+
+.progress-bar {
+    width: 0%;
+    height: 30px;
+    background-color: #d49621;
+    text-align: center;
+    line-height: 30px;
+    color: white;
+    transition: width 0.4s ease;
+}
+
+h6 {
+    color: #bd851d;
+    font-size: 0.8rem;
+    margin-left: 2rem !important;
+    margin: 1rem;
+}
+
+.boba-bubbles {
+    position: fixed;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    height: 100px;
+    overflow: hidden;
+    pointer-events: none;
+    z-index: 20;
+    margin-bottom: 20px;
+}
+
+.bubble {
+    pointer-events: all;
+}
+
+.boba-bubbles .bubble {
+    position: absolute;
+    bottom: 0;
+    left: var(--left);
+    width: var(--size);
+    height: var(--size);
+    border-radius: 50%;
+    background: radial-gradient(circle at 30% 30%, rgba(255, 255, 255, 0.08), #1c1c1c);
+    opacity: 0.9;
+    animation: floatUp 5s ease-in-out infinite;
+    animation-delay: var(--delay);
+}
+
+
+@keyframes floatUp {
+    0% {
+        transform: translateY(0) scale(1);
+        opacity: 0.9;
+    }
+
+    50% {
+        transform: translateY(-20px) scale(1.05);
+        opacity: 1;
+    }
+
+    100% {
+        transform: translateY(0) scale(1);
+        opacity: 0.9;
+    }
+}
+
+@media (prefers-reduced-motion: reduce) {
+    .boba-bubbles .bubble {
+        animation: none;
+    }
+}
+
+#boba-popup-overlay {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100vw;
+    height: 100vh;
+    background-color: #d495214b;
+    display: none;
+    align-items: center;
+    justify-content: center;
+    z-index: 50;
+}
+
+#boba-popup {
+    background-color: #a0721c;
+    color: #fad693;
+    padding: 2rem;
+    border-radius: 1rem;
+    text-align: center;
+    max-width: 80%;
+    font-family: 'Momo Trust Sans', sans-serif;
+    box-shadow: 0 4px 20px rgba(0, 0, 0, 0.3);
+}
+
+#boba-popup p {
+    color: #ffdb9a;
+}
+
+#boba-popup-btn {
+    margin-top: 1.5rem;
+    padding: 0.8rem 2rem;
+    border-radius: 0.5rem;
+    border: none;
+    background-color: #ffd079;
+    color: #a0721c;
+    cursor: pointer;
+    font-weight: bold;
+    transition: transform 0.15s ease;
+}
+
+#boba-popup-btn:hover {
+    transform: scale(1.05);
+}
+
+.banana {
+    display: inline-block;
+}
+
+#leader {
+    cursor: pointer;
+}
+
+.gamebox {
+    display: inline-block;
+    width: 45%;
+    margin: auto;
+    vertical-align: top;
+}
+
+#console {
+    background-color: #bd851d;
+    border-radius: 7px;
+    color: #ffdb9a !important;
+    font-family: 'Momo Trust Sans', sans-serif;
+    padding: 1rem;
+    margin: 1rem auto;
+}
+
+#console>p:first-child {
+    color: #ffdb9a;
+    font-weight: bold;
+    font-size: 1.2rem;
+}
+
+#console,
+#console * {
+    color: #ffdb9a !important;
+}
+
+@keyframes bobaPopIn {
+    0% {
+        transform: scale(0);
+        opacity: 0;
+    }
+
+    60% {
+        transform: scale(1.2);
+        opacity: 1;
+    }
+
+    100% {
+        transform: scale(1);
+    }
+}
+
+#boba-popup.show {
+    animation: bobaPopIn 0.4s ease forwards;
+}
+
+#loading-screen {
+  position: fixed;
+  inset: 0;
+  background-color: #ffdb9a;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  z-index: 999;
+  transition: opacity 0.6s ease, visibility 0.6s ease;
+}
+
+.loading-bubbles {
+  display: flex;
+  gap: 1rem;
+  margin-bottom: 1.5rem;
+}
+
+.load-bubble {
+  width: 50px;
+  height: 50px;
+  border-radius: 50%;
+  background: radial-gradient(circle at 30% 30%, rgba(255,255,255,0.08), #1c1c1c);
+  opacity: 0.9;
+  animation: bubbleBounce 1.2s infinite ease-in-out;
+  animation-delay: var(--delay);
+}
+
+@keyframes bubbleBounce {
+  0%, 100% {
+    transform: translateY(0) scale(1);
+  }
+  50% {
+    transform: translateY(-20px) scale(1.1);
+  }
+}
+
+#loading-text {
+  color: #bd851d;
+  font-size: 1.5rem;
+  font-family: "Momo Trust Sans", sans-serif;
+}
+
+#tip-text {
+  position: absolute;
+  bottom: 2rem;
+  left: 2rem;
+  color: #a0721c;
+  font-size: 1rem;
+  font-family: "Momo Trust Sans", sans-serif;
+  opacity: 0.8;
+}
+
+#loading-screen.hidden {
+  opacity: 0;
+  visibility: hidden;
+}
+
+@keyframes popIn {
+  0% { transform: scale(0); opacity: 0; }
+  60% { transform: scale(1.2); opacity: 1; }
+  100% { transform: scale(1); }
+}
+
+.pop-in {
+  animation: popIn 0.4s ease forwards;
+}

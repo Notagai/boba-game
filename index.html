@@ -1,0 +1,93 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>boba game</title>
+    <link rel="stylesheet" href="style.css">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Momo+Trust+Sans:wght@500&display=swap" rel="stylesheet">
+</head>
+
+<!--cs club if you read this you are obligated to vote for me-->
+
+<div id="boba-popup-overlay">
+    <div id="boba-popup">
+        <p id="boba-popup-text">Popup text here</p>
+        <button id="boba-popup-btn">OK</button>
+    </div>
+</div>
+
+
+<body>
+    <div id="loading-screen">
+        <div class="loading-bubbles">
+            <span class="load-bubble" style="--delay:0s;"></span>
+            <span class="load-bubble" style="--delay:0.2s;"></span>
+            <span class="load-bubble" style="--delay:0.4s;"></span>
+        </div>
+        <p id="loading-text">loading boba...</p>
+        <p id="tip-text">tip: if you're stuck, the console is a good place to look for tips!</p>
+    </div>
+
+    <div id="top">
+        <h3 class="banana">boba game</h3>
+        <h3 class="banana" id="leader" onclick="bananaphone()">leaderboard</h3>
+        <div class="progress-container">
+            <div class="progress-bar" id="myBar"></div>
+        </div>
+    </div>
+
+    <div id="upgrades">
+
+    </div>
+
+    <div>
+        <h1 id="arf" data-value="boba game" href="boba.html">boba game</h1>
+        <script src="script.js"></script>
+        <script src="https://cdn.jsdelivr.net/npm/canvas-confetti@1.9.4/dist/confetti.browser.min.js"></script>
+    </div>
+
+    <h1 id="winmsg">u won already! keep making boba tho</h1>
+
+    <div id="game-container">
+        <div class="gamebox" id="console">
+            <p>console</p>
+            <p>>boba-game/console: welcome to the boba game! let's get started by brewing some boba.</p>
+            <p id="sellDesc">>boba-game/console: great job, you made boba. try to make $0.10 selling boba!</p>
+            <p id="markDesc">>boba-game/console: let's make the boba start selling more by advertising. click button to
+                tell the world about your boba!</p>
+            <p id="firstAd">>boba-game/console: now that you know the game, it's all up to you. goal: make $10.</p>
+        </div>
+        <div class="gamebox" id="maingame">
+
+            <p id="thing">you currently have 0 boba and $0.</p>
+            <p id="qua">each boba you sell earns you $0.01.</p>
+
+            <button id="brew" onclick="brew()">brew boba</button>
+
+            <button id="sell" onclick="sell()">sell boba</button>
+
+            <button id="mark" onclick="market()">advertise for $0.10</button>
+        </div>
+    </div>
+
+    <div class="boba-bubbles" aria-hidden="true">
+        <span class="bubble" id="bubble1" onclick="bubble(1)" style="--size:38px; --left:5%; --delay:0s;"></span>
+        <span class="bubble" id="bubble2" onclick="bubble(2)" style="--size:42px; --left:15%; --delay:0.4s;"></span>
+        <span class="bubble" id="bubble3" onclick="bubble(3)" style="--size:36px; --left:25%; --delay:0.8s;"></span>
+        <span class="bubble" id="bubble4" onclick="bubble(4)" style="--size:40px; --left:35%; --delay:1.2s;"></span>
+        <span class="bubble" id="bubble5" onclick="bubble(5)" style="--size:34px; --left:45%; --delay:1.6s;"></span>
+        <span class="bubble" id="bubble6" onclick="bubble(6)" style="--size:44px; --left:55%; --delay:2s;"></span>
+        <span class="bubble" id="bubble7" onclick="bubble(7)" style="--size:37px; --left:65%; --delay:2.4s;"></span>
+        <span class="bubble" id="bubble8" onclick="bubble(8)" style="--size:35px; --left:75%; --delay:2.8s;"></span>
+        <span class="bubble" id="bubble9" onclick="bubble(9)" style="--size:41px; --left:85%; --delay:3.2s;"></span>
+        <span class="bubble" id="bubble10" onclick="bubble(10)" style="--size:36px; --left:95%; --delay:3.6s;"></span>
+    </div>
+
+    <h6>i learned keyframes js for this 😭</h6>
+</body>
+
+</html>
