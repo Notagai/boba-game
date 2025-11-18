@@ -55,7 +55,7 @@ export function createQuests(getButton){
             target: 25,
             getValue: () => gs.money,
             description: "earn $10 selling your boba!",
-            completeMessage: ">boba-game/console: congratulations! You've built a thriving boba business from the ground up. You've mastered the art of boba making and selling. Thanks for playing!  if you want more though... $1000?"
+            completeMessage: ">boba-game/console: congratulations! you've built a thriving boba business from the ground up. You've mastered the art of boba making and selling. thanks for playing!  if you want more though... $1000?"
         },
         // challenge the player to make 1000 money after finishing the game
         {
