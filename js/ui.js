@@ -4,7 +4,6 @@
 
 import { isMobile, letters } from "./utils.js";
 import { get } from "./dom.js";
-import { pushConsole } from "./console.js";
 import {flags, gameState as gs} from "./game-state.js";
 import {Button} from "./button.js";
 

@@ -1,6 +1,5 @@
-import { get } from "./dom.js";
-import {flags, gameState as gs, state} from "./game-state.js";
-import { formatMoney, audio } from "./utils.js";
+import { gameState as gs, state} from "./game-state.js";
+import { formatMoney } from "./utils.js";
 import { pushConsole } from "./console.js";
 import { Button } from "./button.js";
 import {createTabButton, showPopup} from "./ui.js";
