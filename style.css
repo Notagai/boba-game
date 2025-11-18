@@ -248,6 +248,16 @@ hr {
     height: 2px !important;
 }
 
+.button-progress-bar {
+    width: 0;
+    height: 20px;
+    background-color: #5fb8ff;
+    text-align: center;
+    line-height: 20px;
+    color: white;
+    transition: width 0.4s ease;
+}
+
 /* ========================================
    game boxes (console + main game area)
    ======================================== */

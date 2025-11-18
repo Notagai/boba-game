@@ -52,5 +52,6 @@ export function typeText(element, text, onComplete = null, speed = 50) {
 // function to update a general progress bar
 export function updateProgressBar(button, progress) {
     const progressBar = button.progressBar;
+    console.log(button.progressBar)
     progressBar.style.width = `${progress * 100}%`;
 }

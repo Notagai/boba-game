@@ -19,12 +19,12 @@ export const gameState = {
     },
     advertise: {
         advertisingCost: 0.10,
-        advertisingSpeed: 5,
+        advertisingSpeed: 1,
         advertisingEffectiveness: 0.01,
         advertisementsRan: 0,
     },
     machine: {
-        buyMachineSpeed: 10,
+        buyMachineSpeed: 1,
         machineCount: 0,
         machineCost: 1,
         machineSpeed: 5, // 5 seconds to make 1 boba
