@@ -15,6 +15,7 @@ export function formatMoney(value) {
 export const audio = {
     // not good for ear
     fahhh: new Audio("../fahhhhhhhhhhhhhh.mp3"),
+    // tactile button feedback
     pop: new Audio("../pop.mp3")
 };
 
