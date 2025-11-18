@@ -3,6 +3,8 @@
 
 import { formatMoney } from "./utils.js";
 import { updateStatus } from "./dom.js";
+import { updateQuestProgress } from "./quest.js";
+import { updateUpgradesProgress } from "./upgrades.js";
 
 // core game state
 export const gameState = {
@@ -54,11 +56,22 @@ export const state = {
     }
 };
 
+// function to update gamestate, right now just quests and upgrades will use this
+export function updateGameState() {
+    // update quest progress
+    updateQuestProgress();
+
+    // update upgrade buttons
+    updateUpgradesProgress();
+}
+
 // button flags
 export const flags = {
     brewingAllowed: true,
     advertisingAllowed: true,
     buyMachineAllowed: true,
+    upgradesUnlocked: false,
+    isVerticalPanelOpen: false,
 
     // convert a button id to its controlling flag
     toFlag(id) {

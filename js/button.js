@@ -3,22 +3,25 @@
 
 import { get } from "./dom.js";
 import { flags } from "./game-state.js";
-import { updateProgress } from "./quest.js";
+import { updateGameState } from "./game-state.js";
+import { updateQuestProgress } from "./quest.js";
 import { audio } from "./utils.js";
 
 export class Button {
     constructor(id, enabledText, disabledText,
-                getWaitTime = null, tooltipText = null, tooltipStatsTextSupplier = null, preRunCheck = null, buttonAction = null,
-                addProgressBar = false, enabledColor = "#ffd079", disabledColor = "#dbd0baff", runningColor = "#c1fafb") {
+                getWaitTime = null, tooltipHeader = null, tooltipText = null, tooltipStatsTextSupplier = null, preRunCheck = null, buttonAction = null,
+                addProgressBar = false, containerId = "button-container", enabledColor = "#ffd079", disabledColor = "#dbd0baff", runningColor = "#c1fafb") {
         this.id = id;
         this.enabledText = enabledText;
         this.disabledText = disabledText;
-        this.tooltipText = tooltipText;
         this.getWaitTime = (typeof getWaitTime === "function") ? getWaitTime : () => 0;
+        this.tooltipHeader = tooltipHeader;
+        this.tooltipText = tooltipText;
         this.textPartsSupplier = tooltipStatsTextSupplier;
         this.preRunCheck = preRunCheck;
         this.buttonAction = buttonAction;
         this.addProgressBar = addProgressBar;
+        this.containerId = containerId;
         this.enabledColor = enabledColor;
         this.disabledColor = disabledColor;
         this.runningColor = runningColor;
@@ -27,7 +30,7 @@ export class Button {
 
     // function to get flag
     getFlag() {
-        return (this.getWaitTime() > 0) ? flags.toFlag(this.id) :null;
+        return (this.getWaitTime() > 0) ? flags.toFlag(this.id) : null;
     }
 
     // function to get flag value
@@ -73,43 +76,60 @@ export class Button {
         this.buttonWrapper = document.createElement("div");
         this.buttonWrapper.className = "button-wrapper";
 
-        // make wrapper control positioning so tooltip doesn't shift layout
-        this.buttonWrapper.style.position = "relative";
-        this.buttonWrapper.style.display = "inline-block";
-
         // this makes the actual button element
         this.button = document.createElement("button");
         this.button.id = this.id;
         this.enable();
         this.button.addEventListener("click", () => this.run());
-        this.button.style.display = "inline-block";
         this.buttonWrapper.appendChild(this.button);
 
-        // this adds a tooltip if provided
-        if (this.tooltipText) {
-            const tooltip = document.createElement("span");
-            tooltip.className = "tooltip";
-            this.buttonWrapper.appendChild(tooltip);
+        // this adds a tooltip if needed
+        if (this.tooltipHeader || this.tooltipText || this.textPartsSupplier) {
+            this.tooltip = document.createElement("span");
+            this.tooltip.className = "tooltip";
+            this.buttonWrapper.appendChild(this.tooltip);
+        }
 
+        // this adds a tooltip header if provided
+        if (this.tooltipHeader) {
+            const header = document.createElement("h3");
+            header.innerText = this.tooltipHeader;
+            this.tooltip.appendChild(header);
+        }
+
+        // this adds tooltip text if provided
+        if (this.tooltipText) {
             const blurb = document.createElement("p");
             blurb.innerText = this.tooltipText;
-            tooltip.appendChild(blurb);
+            this.tooltip.appendChild(blurb);
+        }
 
-            // things to do only if stats text supplier is provided
-            if (this.textPartsSupplier) {
-                const horizontalRule = document.createElement("hr");
-                tooltip.appendChild(horizontalRule);
+        // things to do only if stats text supplier is provided
+        if (this.textPartsSupplier) {
+            const horizontalRule = document.createElement("hr");
+            this.tooltip.appendChild(horizontalRule);
 
-                this.stats = document.createElement("div");
-                this.stats.className = "tooltip-stats";
-                tooltip.appendChild(this.stats);
+            this.stats = document.createElement("div");
+            this.stats.className = "tooltip-stats";
+            this.tooltip.appendChild(this.stats);
 
-                // update stats text every time tooltip is shown
-                this.button.addEventListener("mouseover", () => {
-                    this.setStatsText();
-                });
-            }
+            // update stats text every time tooltip is shown
+            this.button.addEventListener("mouseover", () => {
+                this.setStatsText();
+            });
+        }
 
+        // check if tooltip is off-screen, flip if it is
+        if (this.tooltip) {
+            this.button.addEventListener("mouseover", () => {
+                const rect = this.button.getBoundingClientRect();
+                if (rect.right + this.tooltip.offsetWidth > window.innerWidth) {
+                    // should flip tooltip around the center of the button
+                    this.tooltip.style.left = `calc(-1rem - ${this.tooltip.offsetWidth}px)`;
+                } else {
+                    this.tooltip.style.left = "calc(100% + 1rem)";
+                }
+            });
         }
 
         // add a progress bar if requested
@@ -124,8 +144,18 @@ export class Button {
             this.buttonWrapper.appendChild(progressContainer);
         }
 
-        const buttonContainer = get("button-container");
+        // flip the tooltip if no space on the right
+        //if (this.tooltip && this.tooltip.parentNode.)
+
+        const buttonContainer = get(this.containerId);
         buttonContainer.appendChild(this.buttonWrapper);
+    }
+
+    // function to remove the button (aka delete it from the DOM)
+    remove() {
+        if (this.buttonWrapper && this.buttonWrapper.parentNode) {
+            this.buttonWrapper.parentNode.removeChild(this.buttonWrapper);
+        }
     }
 
     // the run cycle of the function
@@ -137,7 +167,7 @@ export class Button {
         const click = audio.pop.cloneNode()
         click.play();
 
-        updateProgress(); // this one in case the pre-run check changes the quest progress
+        updateQuestProgress(); // this one in case the pre-run check changes the quest progress
 
         const waitTime = this.getWaitTime() * 1000; // convert to milliseconds, as waitTime is in seconds
 
@@ -161,7 +191,7 @@ export class Button {
 
                 this.buttonAction();
                 this.enable();
-                updateProgress(); // this one for if the action changes the quest progress
+                updateGameState(); // this one for if the action changes the quest progress
             }, waitTime);
         }
     }

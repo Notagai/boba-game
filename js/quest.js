@@ -2,9 +2,10 @@
 // it handles quest descriptions and progress
 
 import { get, typeText } from "./dom.js";
-import { UNLOCK } from "./utils.js";
+import {UNLOCK_BUTTON, UNLOCK_TAB} from "./utils.js";
 import { gameState as gs } from "./game-state.js";
 import { pushConsole } from "./console.js";
+import { createUpgradesTab } from "./upgrades.js";
 
 let quests = null;
 export function createQuests(getButton){
@@ -13,14 +14,14 @@ export function createQuests(getButton){
             target: 1,
             getValue: () => gs.boba,
             description: "make your first boba!",
-            reward: [UNLOCK, getButton("sell")],
+            reward: [UNLOCK_BUTTON, getButton("sell")],
             completeMessage: ">boba-game/console: great job, you made boba. try to make $0.10 selling boba"
         },
         {
             target: 0.10,
             getValue: () => gs.money,
             description: "earn $0.10 selling your boba",
-            reward: [UNLOCK, getButton("advertise")],
+            reward: [UNLOCK_BUTTON, getButton("advertise")],
             completeMessage: ">boba-game/console: let's make the boba start selling more by advertising. click button to tell the world about your boba!"
         },
         {
@@ -33,7 +34,7 @@ export function createQuests(getButton){
             target: 1,
             getValue: () => gs.money,
             description: "earn $1 selling your boba!",
-            reward: [UNLOCK, getButton("buy-machine")],
+            reward: [UNLOCK_BUTTON, getButton("buy-machine")],
             completeMessage: ">boba-game/console: awesome! now you can afford to automate your boba production. try buying a machine!"
         },
         {
@@ -46,7 +47,8 @@ export function createQuests(getButton){
             target: 5,
             getValue: () => gs.money,
             description: "earn $5 selling your boba!",
-            completeMessage: ">boba-game/console: incredible! you're really making a name for yourself in the boba world. keep it up!"
+            reward: [UNLOCK_TAB, createUpgradesTab],
+            completeMessage: ">boba-game/console: incredible! you're really making a name for yourself in the boba world. check out the upgrades tab!"
         }
     ];
 }
@@ -67,7 +69,7 @@ export function updateDescription(questNumber) {
 }
 
 // function to update the quest progress bar
-export function updateProgress() {
+export function updateQuestProgress() {
     if (currentQuest >= quests.length) return;
 
     const quest = quests[currentQuest];
@@ -85,14 +87,18 @@ export function updateProgress() {
         nextQuest();
 
         switch (quest.reward?.[0]) {
-            case UNLOCK:
+            case UNLOCK_BUTTON:
                 const button = quest.reward[1];
                 button.unlock();
+                break;
+            case UNLOCK_TAB:
+                const tabFunction = quest.reward[1];
+                tabFunction();
                 break;
         }
 
         if (quest.completeMessage) pushConsole(quest.completeMessage);
 
-        if (currentQuest < quests.length) updateDescription(currentQuest).then(() => updateProgress());
+        if (currentQuest < quests.length) updateDescription(currentQuest).then(() => updateQuestProgress());
     }
 }

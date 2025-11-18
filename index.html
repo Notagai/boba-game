@@ -63,19 +63,21 @@
                 </div>
             </div>
             <div class="game-box" id="main-game-container">
-
                 <p id="status-text">you have <span class="highlight" id="boba">0</span> boba and $<span class="highlight" id="money">0</span>.</p>
                 <p id="value-text">each boba is worth $<span class="highlight" id="boba-value">0.01</span>.</p>
 
                 <div id="main-game">
                     <div class="game-box" id="button-container"></div>
-                    <div class="game-box dark-bg" id="upgrades-panel">
-                        <h3 class="game-box-header">~upgrades~</h3>
-                        <div id="upgrades-container"></div>
+                    <div id="tabs-column-wrapper">
+                        <div class="dark-bg" id="vertical-tabs-container"></div>
                     </div>
                 </div>
+                <div id="tab-content-area"></div>
             </div>
         </div>
+
+
+
 
         <div class="boba-bubbles" aria-hidden="true">
             <span class="bubble" id="bubble1" onclick="bubble(1)" style="--size:48px; --left:3%; --delay:0s;"></span>
@@ -89,8 +91,6 @@
             <span class="bubble" id="bubble9" onclick="bubble(9)" style="--size:51px; --left:83%; --delay:3.2s;"></span>
             <span class="bubble" id="bubble10" onclick="bubble(10)" style="--size:46px; --left:93%; --delay:3.6s;"></span>
         </div>
-
-        <h6>i learned keyframes js for this 😭</h6>
 
         <!-- new modular scripts: utils first (helpers/orientation/typewriter), game logic next, UI last -->
         <script src="js/main.js" type="module"></script>

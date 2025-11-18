@@ -3,26 +3,25 @@
 // and initializes the main game buttons
 
 // imports
-import { gameState as gs, state } from "./game-state.js";
+import {gameState as gs, state, updateGameState} from "./game-state.js";
 import { get, updateStatus, updateValue, updateProgressBar } from "./dom.js";
 import { checkOrientation, showPopup } from "./ui.js";
 import { Button } from "./button.js";
 import { updateDescription, currentQuest, createQuests } from "./quest.js";
 import { formatMoney } from "./utils.js";
+import { createUpgrades, initializeUpgradeButtons } from "./upgrades.js";
 
 
 // initialize main game buttons
-export const brewBtn = new Button("brew", "brew boba", "boba brewing...", () => gs.brew.brewSpeed,
+export const brewBtn = new Button("brew", "brew boba", "boba brewing...", () => gs.brew.brewSpeed, null,
     "the thing you dreamed of all your life is finally coming true... brewing boba! wait... do you even know how to use this machine? no? oh...",
-    () => {
-        return [
+    () => [
             "you can brew boba every ",
             gs.brew.brewSpeed,
             ` second${gs.brew.brewSpeed === 1 ? "" : "s"} and make `,
             gs.brew.bobaPerBrew,
             " boba each time"
-        ]
-    },
+    ],
     () => {
         if (!brewBtn.getFlagValue()) {
             showPopup("your boba is brewing! wait a sec");
@@ -33,20 +32,17 @@ export const brewBtn = new Button("brew", "brew boba", "boba brewing...", () => 
     () => {
         state.changeBoba(1);
         gs.brew.bobaMade ++;
-        updateStatus();
     }
 );
 
-export const sellBtn = new Button("sell", "sell boba", null, null,
+export const sellBtn = new Button("sell", "sell boba", null, null, null,
     "money is nice. you know what is nicer? boba! why are you selling boba??? so yummy... omnomnomnomnom",
-    () => {
-        return [
+    () => [
             "with a sell multiplier of ",
             gs.sell.sellMultiplier,
             ", you can sell 1 boba for $",
             formatMoney(gs.bobaValue)
-        ]
-    },
+    ],
     () => {
         if (gs.boba <= 0) {
             showPopup("no boba to sell! brew some first");
@@ -58,20 +54,17 @@ export const sellBtn = new Button("sell", "sell boba", null, null,
         gs.sell.bobaSold++;
         state.changeBoba(-1);
         state.changeMoney(gs.bobaValue);
-        updateStatus();
     }
 );
 
-export const adBtn = new Button("advertise", "advertise", "running ads...", () => gs.advertise.advertisingSpeed,
+export const adBtn = new Button("advertise", "advertise", "running ads...", () => gs.advertise.advertisingSpeed, null,
     "people really hate ads... too bad for them! you're going to need customers to survive in this boba business. it's a boba-eat-boba world out there.",
-    () => {
-        return [
+    () => [
             "the next ad campaign $",
             gs.advertise.advertisingCost,
             " and increases boba value by $",
             gs.advertise.advertisingEffectiveness
-        ]
-    },
+    ],
     () => {
         if (!adBtn.getFlagValue()) {
             showPopup("advertising in progress, wait");
@@ -82,8 +75,6 @@ export const adBtn = new Button("advertise", "advertise", "running ads...", () =
         }
 
         state.changeMoney(-gs.advertise.advertisingCost);
-        updateStatus();
-
         return true;
     },
     () => {
@@ -96,18 +87,16 @@ export const adBtn = new Button("advertise", "advertise", "running ads...", () =
     }
 );
 
-export const buyMachineBtn = new Button("buy-machine", "buy machine", "purchasing...", () => gs.machine.buyMachineSpeed,
+export const buyMachineBtn = new Button("buy-machine", "buy machine", "purchasing...", () => gs.machine.buyMachineSpeed, null,
     "why do all the work yourself when machines can do it for you? automation is the future! (hopefully this boba brewer machine won't take over the world thoh... at least not without making profit!!)",
-    () => {
-        return [
+    () => [
             "you have ",
             gs.machine.machineCount,
             ` machine${gs.machine.machineCount === 1 ? "" : "s"}. each machine makes 1 boba every `,
             gs.machine.machineSpeed,
             " seconds. next machine costs $",
             gs.machine.machineCost
-        ]
-    },
+    ],
     () => {
         if (!buyMachineBtn.getFlagValue()) {
             showPopup("you already have a machine on the way, please wait");
@@ -149,6 +138,10 @@ export function initGame() {
 
     // initialize quest description on load, no need for a then statement as nothing depends on it
     updateDescription(currentQuest);
+
+    // initialize upgrades system
+    createUpgrades();
+    initializeUpgradeButtons();
 }
 
 // here are functions to wire up various game systems (e.g. win condition, ui listeners)
@@ -205,13 +198,13 @@ function wireMachineAutomation() {
             if (gs.machine.machineProgress >= 1) {
                 state.changeBoba(gs.machine.machineCount);
                 gs.machine.machineProgress = 0;
+                updateGameState();
             }
 
             updateProgressBar(buyMachineBtn, gs.machine.machineProgress);
         }
     }, updateInterval);
 }
-
 
 // getter function for the buttons to prevent the circular dependency with quest.js
 export function getButton(buttonName) {

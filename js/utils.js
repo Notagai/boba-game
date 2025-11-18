@@ -19,5 +19,6 @@ export const audio = {
 };
 
 // constants for reference
-export const UNLOCK = 1;
+export const UNLOCK_BUTTON = 1;
+export const UNLOCK_TAB = 2;
 export const letters = "abcdefghijklmnopqrstuvwxyz";
