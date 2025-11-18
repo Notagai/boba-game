@@ -167,7 +167,7 @@ function wireWinCondition() {
     const easter = gs.easterEgg;
 
     setInterval(() => {
-        if (gs.money >= 10 && !gs.won) {
+        if (gs.money >= 25 && !gs.won) {
             const winMessage = get("win-message");
             winMessage.style.display = "block";
             gs.won = true;

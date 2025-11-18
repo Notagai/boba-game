@@ -3,6 +3,7 @@ import { formatMoney } from "./utils.js";
 import { pushConsole } from "./console.js";
 import { Button } from "./button.js";
 import {createTabButton, showPopup} from "./ui.js";
+import { updateValue } from "./dom.js";
 
 
 // defining the upgrade container and purchased upgrades container
@@ -19,15 +20,130 @@ let upgrades = null;
 export function createUpgrades() {
     upgrades = [
         {
-            icon: "🧋",
-            name: "test",
-            blurb: "this is just a little test upgrade; don't mind me!",
-            status: () => ["just for funsies, this upgrade will give you $", 10, " straight out of thin air!"],
-            checkRequirement: () => gs.brew.bobaMade > 1,
+            icon: "⚡",
+            name: "faster brewing",
+            blurb: "upgrade your brewing technique to make boba faster!",
+            status: () => ["reduces brewing time from ", gs.brew.brewSpeed, " seconds to ", gs.brew.brewSpeed * 0.75, " seconds"],
+            checkRequirement: () => gs.brew.bobaMade >= 10,
             isUnlocked: false,
-            cost: 0.05,
+            cost: 2,
             effect: () => {
-                state.changeMoney(10);
+                gs.brew.brewSpeed *= 0.75;
+            }
+        },
+        {
+            icon: "📦",
+            name: "bulk brewing",
+            blurb: "brew multiple boba at once! efficiency is key.",
+            status: () => ["increases boba per brew from ", gs.brew.bobaPerBrew, " to ", gs.brew.bobaPerBrew + 1, " boba"],
+            checkRequirement: () => gs.brew.bobaMade >= 25,
+            isUnlocked: false,
+            cost: 5,
+            effect: () => {
+                gs.brew.bobaPerBrew += 1;
+            }
+        },
+        {
+            icon: "💰",
+            name: "premium packaging",
+            blurb: "fancy packaging makes customers willing to pay more!",
+            status: () => ["increases sell multiplier from ", gs.sell.sellMultiplier, "x to ", (gs.sell.sellMultiplier + 0.5).toFixed(1), "x, boosting your profit per boba"],
+            checkRequirement: () => gs.sell.bobaSold >= 20,
+            isUnlocked: false,
+            cost: 8,
+            effect: () => {
+                gs.sell.sellMultiplier += 0.5;
+                gs.bobaValue = formatMoney(gs.bobaValue * 1.5);
+                updateValue();
+            }
+        },
+        {
+            icon: "📢",
+            name: "ad efficiency",
+            blurb: "learn better marketing strategies to get more bang for your buck!",
+            status: () => ["increases ad effectiveness from $", gs.advertise.advertisingEffectiveness, " to $", (gs.advertise.advertisingEffectiveness * 1.5).toFixed(3), " per campaign"],
+            checkRequirement: () => gs.advertise.advertisementsRan >= 5,
+            isUnlocked: false,
+            cost: 12,
+            effect: () => {
+                gs.advertise.advertisingEffectiveness *= 1.5;
+            }
+        },
+        {
+            icon: "🔧",
+            name: "machine optimization",
+            blurb: "tune up your machines to make them brew faster!",
+            status: () => ["reduces machine brewing time from ", gs.machine.machineSpeed, " seconds to ", gs.machine.machineSpeed * 0.7, " seconds"],
+            checkRequirement: () => gs.machine.machineCount >= 2,
+            isUnlocked: false,
+            cost: 15,
+            effect: () => {
+                gs.machine.machineSpeed *= 0.7;
+            }
+        },
+        {
+            icon: "🎯",
+            name: "discount coupons",
+            blurb: "negotiate better deals on advertising space!",
+            status: () => ["reduces advertising cost by 20%, from $", gs.advertise.advertisingCost, " to $", formatMoney(gs.advertise.advertisingCost * 0.8)],
+            checkRequirement: () => gs.advertise.advertisementsRan >= 10,
+            isUnlocked: false,
+            cost: 20,
+            effect: () => {
+                gs.advertise.advertisingCost = formatMoney(gs.advertise.advertisingCost * 0.8);
+            }
+        },
+        {
+            icon: "🏭",
+            name: "industrial brewing",
+            blurb: "upgrade to industrial-grade equipment for massive production!",
+            status: () => ["increases boba per brew by 3, from ", gs.brew.bobaPerBrew, " to ", gs.brew.bobaPerBrew + 3, " boba"],
+            checkRequirement: () => gs.machine.machineCount >= 5,
+            isUnlocked: false,
+            cost: 50,
+            effect: () => {
+                gs.brew.bobaPerBrew += 3;
+            }
+        },
+        {
+            icon: "⚙️",
+            name: "auto-machines",
+            blurb: "machines now work twice as efficiently!",
+            status: () => ["cuts all machine brewing time in half, from ", gs.machine.machineSpeed, " seconds to ", gs.machine.machineSpeed * 0.5, " seconds"],
+            checkRequirement: () => gs.machine.machineCount >= 10,
+            isUnlocked: false,
+            cost: 100,
+            effect: () => {
+                gs.machine.machineSpeed *= 0.5;
+            }
+        },
+        {
+            icon: "💎",
+            name: "luxury boba",
+            blurb: "create premium boba that sells for top dollar!",
+            status: () => ["doubles your boba value! from $", gs.bobaValue, " to $", formatMoney(gs.bobaValue * 2)],
+            checkRequirement: () => gs.money >= 75,
+            isUnlocked: false,
+            cost: 150,
+            effect: () => {
+                gs.bobaValue = formatMoney(gs.bobaValue * 2);
+                updateValue();
+            }
+        },
+        {
+            icon: "🚀",
+            name: "boba empire",
+            blurb: "the ultimate upgrade - you're now a boba tycoon!",
+            status: () => ["doubles brewing speed, production, and profit! this is it!"],
+            checkRequirement: () => gs.money >= 500,
+            isUnlocked: false,
+            cost: 500,
+            effect: () => {
+                gs.brew.brewSpeed *= 0.5;
+                gs.brew.bobaPerBrew *= 2;
+                gs.bobaValue = formatMoney(gs.bobaValue * 2);
+                gs.machine.machineSpeed *= 0.5;
+                updateValue();
             }
         }
     ]
