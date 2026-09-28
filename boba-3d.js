@@ -86,7 +86,7 @@ function init() {
   pearlMesh = GL.Mesh.sphere({detail:12});
   cylinderMesh = makeCylinder(1,2,96,true);
   ringMesh = makeRing(0.92,0.045,96,12);
-  strawMesh = makeCylinder(0.045,2.6,32,false);
+  strawMesh = makeCylinder(0.045,1.5,32,false);
   for(var i=0;i<18;i++) water.addDrop((Math.random()*1.4)-0.7,(Math.random()*1.4)-0.7,0.045,0.015);
   resize();
   draw();
@@ -116,8 +116,8 @@ function draw(){
   water.textureA.bind(0);
   waterShader.uniforms({water:0,tea:[0.30,0.12,0.035],lightDir:[-0.5,1,0.35]}).draw(waterMesh);
   gl.enable(gl.CULL_FACE);
-  gl.pushMatrix(); gl.translate(0,0.05,0); gl.scale(1.0,1.0,1.0); solidShader.uniforms({color:[0.10,0.035,0.012],lightDir:[-0.5,1,0.35]}).draw(cylinderMesh); gl.popMatrix();
-  gl.pushMatrix(); gl.translate(0,1.32,0); solidShader.uniforms({color:[0.10,0.035,0.012],lightDir:[-0.5,1,0.35]}).draw(ringMesh); gl.popMatrix();
+  gl.pushMatrix(); gl.translate(0,0.05,0); gl.scale(1.0,1.0,1.0); gl.depthMask(false); gl.enable(gl.BLEND); gl.blendFunc(gl.SRC_ALPHA,gl.ONE_MINUS_SRC_ALPHA); glassShader.uniforms({tint:[0.86,0.92,0.95]}).draw(cylinderMesh); gl.disable(gl.BLEND); gl.depthMask(true); gl.popMatrix();
+  gl.pushMatrix(); gl.translate(0,1.05,0); solidShader.uniforms({color:[0.10,0.035,0.012],lightDir:[-0.5,1,0.35]}).draw(ringMesh); gl.popMatrix();
   gl.depthMask(false); gl.enable(gl.BLEND); gl.blendFunc(gl.SRC_ALPHA,gl.ONE_MINUS_SRC_ALPHA);
   gl.pushMatrix(); gl.translate(0,0.05,0); gl.scale(1.015,1.0,1.015); glassShader.uniforms({tint:[0.86,0.92,0.95]}).draw(cylinderMesh); gl.popMatrix();
   gl.depthMask(true); gl.disable(gl.BLEND);
@@ -128,7 +128,7 @@ function draw(){
     solidShader.uniforms({color:[0.035,0.012,0.006],lightDir:[-0.5,1,0.35]}).draw(pearlMesh); gl.popMatrix();
   }
   gl.enable(gl.CULL_FACE);
-  gl.pushMatrix(); gl.translate(0.38,1.42,0.05); gl.rotate(-8,0,0,1); solidShader.uniforms({color:[0.90,0.68,0.20],lightDir:[-0.5,1,0.35]}).draw(strawMesh); gl.popMatrix();
+  gl.pushMatrix(); gl.translate(0.38,1.72,0.05); gl.rotate(-8,0,0,1); solidShader.uniforms({color:[0.90,0.68,0.20],lightDir:[-0.5,1,0.35]}).draw(strawMesh); gl.popMatrix();
 }
 
 window.onload=init;
