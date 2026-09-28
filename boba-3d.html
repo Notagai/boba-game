@@ -1,0 +1,15 @@
+<!doctype html>
+<html lang="en"><head>
+<meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1">
+<title>3D Boba Cup Prototype</title>
+<style>
+html,body{margin:0;width:100%;height:100%;overflow:hidden;background:#090604;font-family:system-ui,sans-serif}
+#hud{position:fixed;z-index:2;left:20px;top:18px;color:#f8e9d2;background:#1a100bcc;border:1px solid #6d4b2d;border-radius:14px;padding:14px 16px;backdrop-filter:blur(8px)}
+#hud strong{display:block;font-size:18px}#hud span{display:block;opacity:.72;font-size:13px;margin-top:4px}
+</style></head><body>
+<div id="hud"><strong>3D boba cup</strong><span>drag to orbit · wheel to zoom · space to pause</span></div>
+<script src="https://raw.githubusercontent.com/evanw/webgl-water/master/OES_texture_float_linear-polyfill.js"></script>
+<script src="https://raw.githubusercontent.com/evanw/webgl-water/master/lightgl.js"></script>
+<script src="https://raw.githubusercontent.com/evanw/webgl-water/master/water.js"></script>
+<script src="boba-3d.js"></script>
+</body></html>
