@@ -3,7 +3,7 @@
 
 import { isMobile, letters } from "./utils.js";
 import { get, flashReject } from "./dom.js";
-import { flags, gameState as gs } from "./game-state.js";
+import { flags, saveGame as saveGameState, loadGame as loadSavedGame, clearSavedGame, getSaveInfo } from "./game-state.js";
 import { Button } from "./button.js";
 
 export function checkOrientation() {
@@ -34,16 +34,41 @@ export function bannerScrollEffect() {
 }
 window.bannerScrollEffect = bannerScrollEffect;
 
-export function leaderboard() {
-    const panel = get("leaderboard-panel");
-    const entry = get("player-leaderboard-entry");
-    if (!panel || !entry) return;
-
-    entry.textContent = `2. You: $${gs.money}`;
+export function toggleSettings() {
+    const panel = get("settings-panel");
+    if (!panel) return;
     const isOpen = panel.classList.toggle("open");
     panel.setAttribute("aria-hidden", String(!isOpen));
+    if (isOpen) updateSaveStatus();
 }
-window.leaderboard = leaderboard;
+window.toggleSettings = toggleSettings;
+
+function formatSaveTime(timestamp) {
+    return timestamp ? new Date(timestamp).toLocaleString() : "no local save yet";
+}
+export function updateSaveStatus(message = null) {
+    const info = getSaveInfo();
+    get("save-status")?.replaceChildren(document.createTextNode(message || "autosave is on"));
+    get("save-time")?.replaceChildren(document.createTextNode(info ? `last save: ${formatSaveTime(info.savedAt)}` : "no local save yet"));
+}
+export function saveGame() {
+    const savedAt = saveGameState();
+    updateSaveStatus(savedAt ? "saved locally" : "local saving is unavailable");
+    if (!savedAt) flashReject(get("settings"));
+}
+window.saveGame = saveGame;
+export function loadGame() {
+    const savedAt = loadSavedGame();
+    if (!savedAt) { updateSaveStatus("no local save found"); flashReject(get("settings")); return; }
+    updateStatus();
+    updateSaveStatus("loaded local save");
+}
+window.loadGame = loadGame;
+export function clearSave() {
+    if (!clearSavedGame()) { updateSaveStatus("could not clear save"); flashReject(get("settings")); return; }
+    updateSaveStatus("local save cleared");
+}
+window.clearSave = clearSave;
 
 const contentArea = get("tab-content-area");
 const tabColumnWrapper = get("tabs-column-wrapper");
