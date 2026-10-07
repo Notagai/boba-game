@@ -1,12 +1,10 @@
-import { gameState as gs, state} from "./game-state.js";
+import { gameState as gs, state } from "./game-state.js";
 import { formatMoney } from "./utils.js";
 import { pushConsole } from "./console.js";
 import { Button } from "./button.js";
-import {createTabButton, showPopup} from "./ui.js";
-import { updateValue } from "./dom.js";
+import { createTabButton } from "./ui.js";
+import { updateValue, flashReject } from "./dom.js";
 
-
-// defining the upgrade container and purchased upgrades container
 const upgradesContainer = document.createElement("div");
 upgradesContainer.id = "upgrades-container";
 upgradesContainer.classList.add("button-container");
@@ -15,8 +13,8 @@ const purchasedUpgradesContainer = document.createElement("div");
 purchasedUpgradesContainer.id = "purchased-upgrades-container";
 purchasedUpgradesContainer.classList.add("button-container");
 
-// upgrades setter function (to avoid circular dependencies)
 let upgrades = null;
+
 export function createUpgrades() {
     upgrades = [
         {
@@ -27,9 +25,7 @@ export function createUpgrades() {
             checkRequirement: () => gs.brew.bobaMade >= 10,
             isUnlocked: false,
             cost: 2,
-            effect: () => {
-                gs.brew.brewSpeed *= 0.75;
-            }
+            effect: () => { gs.brew.brewSpeed *= 0.75; }
         },
         {
             icon: "📦",
@@ -39,9 +35,7 @@ export function createUpgrades() {
             checkRequirement: () => gs.brew.bobaMade >= 25,
             isUnlocked: false,
             cost: 5,
-            effect: () => {
-                gs.brew.bobaPerBrew += 1;
-            }
+            effect: () => { gs.brew.bobaPerBrew += 1; }
         },
         {
             icon: "💰",
@@ -65,9 +59,7 @@ export function createUpgrades() {
             checkRequirement: () => gs.advertise.advertisementsRan >= 5,
             isUnlocked: false,
             cost: 12,
-            effect: () => {
-                gs.advertise.advertisingEffectiveness *= 1.5;
-            }
+            effect: () => { gs.advertise.advertisingEffectiveness *= 1.5; }
         },
         {
             icon: "🔧",
@@ -77,9 +69,7 @@ export function createUpgrades() {
             checkRequirement: () => gs.machine.machineCount >= 2,
             isUnlocked: false,
             cost: 15,
-            effect: () => {
-                gs.machine.machineSpeed *= 0.7;
-            }
+            effect: () => { gs.machine.machineSpeed *= 0.7; }
         },
         {
             icon: "🎯",
@@ -89,9 +79,7 @@ export function createUpgrades() {
             checkRequirement: () => gs.advertise.advertisementsRan >= 10,
             isUnlocked: false,
             cost: 20,
-            effect: () => {
-                gs.advertise.advertisingCost = formatMoney(gs.advertise.advertisingCost * 0.8);
-            }
+            effect: () => { gs.advertise.advertisingCost = formatMoney(gs.advertise.advertisingCost * 0.8); }
         },
         {
             icon: "🏭",
@@ -101,9 +89,7 @@ export function createUpgrades() {
             checkRequirement: () => gs.machine.machineCount >= 5,
             isUnlocked: false,
             cost: 50,
-            effect: () => {
-                gs.brew.bobaPerBrew += 3;
-            }
+            effect: () => { gs.brew.bobaPerBrew += 3; }
         },
         {
             icon: "⚙️",
@@ -113,15 +99,13 @@ export function createUpgrades() {
             checkRequirement: () => gs.machine.machineCount >= 10,
             isUnlocked: false,
             cost: 100,
-            effect: () => {
-                gs.machine.machineSpeed *= 0.5;
-            }
+            effect: () => { gs.machine.machineSpeed *= 0.5; }
         },
         {
             icon: "💎",
             name: "luxury boba",
             blurb: "create premium boba that sells for top dollar!",
-            status: () => ["doubles your boba value! from $", gs.bobaValue, " to $", formatMoney(gs.bobaValue * 2)],
+            status: () => ["doubles your boba value! from $", gs.bobaValue, " to ", formatMoney(gs.bobaValue * 2)],
             checkRequirement: () => gs.money >= 75,
             isUnlocked: false,
             cost: 150,
@@ -146,7 +130,7 @@ export function createUpgrades() {
                 updateValue();
             }
         }
-    ]
+    ];
 }
 
 export function initializeUpgradeButtons() {
@@ -163,12 +147,11 @@ export function initializeUpgradeButtons() {
             () => [...upgrade.status(), "\ncost: $", formatMoney(upgrade.cost)],
             () => {
                 if (gs.money < upgrade.cost) {
-                    showPopup("not enough money to purchase this upgrade!");
+                    flashReject(upgrade.button.button, "not enough money to purchase this upgrade");
                     return false;
                 }
                 return true;
             },
-            // do action, then move button to purchased section
             () => {
                 state.changeMoney(-upgrade.cost);
                 upgrade.effect();
@@ -185,7 +168,6 @@ export function initializeUpgradeButtons() {
     });
 }
 
-// function to update upgrades
 export function updateUpgradesProgress() {
     if (!upgrades) return;
 
@@ -198,22 +180,18 @@ export function updateUpgradesProgress() {
     });
 }
 
-// function to render upgrades tab content
 function renderUpgradesTabContent(contentArea) {
-    // available upgrades section
     const availableHeader = document.createElement("h3");
     availableHeader.innerText = "~upgrades available~";
     contentArea.appendChild(availableHeader);
     contentArea.appendChild(upgradesContainer);
 
-    // purchased upgrades section
     const purchasedHeader = document.createElement("h3");
     purchasedHeader.innerText = "~upgrades purchased~";
     contentArea.appendChild(purchasedHeader);
     contentArea.appendChild(purchasedUpgradesContainer);
 }
 
-// create the upgrades tab
 export function createUpgradesTab() {
     const upgradesTabDefinition = {
         id: "upgrades",
@@ -223,4 +201,3 @@ export function createUpgradesTab() {
 
     createTabButton(upgradesTabDefinition);
 }
-

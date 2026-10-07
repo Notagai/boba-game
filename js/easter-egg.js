@@ -1,15 +1,18 @@
 // here be easter eggs
 
 import { gameState as gs, state } from "./game-state.js";
-import { showPopup } from "./ui.js";
+import { get, flashReject } from "./dom.js";
 
 function bubble(bubbleNumber) {
     const easter = gs.easterEgg;
+    const bubbleEl = get(`bubble${bubbleNumber}`);
 
     if (bubbleNumber === easter.currentBubble) {
-        easter.clickedAmount ++;
+        easter.clickedAmount++;
         if (easter.clickedAmount === easter.clickingOrder.length) {
             state.changeMoney(10);
+            flashReject(bubbleEl, "easter egg complete");
+            try { confetti(); } catch (e) {}
             return;
         }
 
@@ -17,13 +20,7 @@ function bubble(bubbleNumber) {
     } else {
         easter.clickedAmount = 0;
         easter.currentBubble = easter.clickingOrder[0];
-    }
-
-    if (bubbleNumber === 5) {
-        showPopup("wow you found an easter egg! here's some confetti for your effort 🎉");
-        try{ confetti(); } catch(e){}
-    } else if (bubbleNumber === 10) {
-        showPopup("nice try ts is not giving you more confetti");
+        flashReject(bubbleEl, "wrong bubble");
     }
 
     console.log(`Clicked bubble ${bubbleNumber}, clickedAmount: ${easter.clickedAmount}, currentBubble: ${easter.currentBubble}`);
