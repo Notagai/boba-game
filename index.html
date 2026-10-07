@@ -33,12 +33,16 @@
 
         <div class="widget-container" id="menu-bar">
             <h3 class="banana">boba game</h3>
-            <button class="banana menu-action" id="leaderboard" type="button" onclick="leaderboard()">leaderboard</button>
-            <div id="leaderboard-panel" aria-live="polite" aria-hidden="true">
-                <strong>leaderboard</strong>
-                <span>1. Little Ella: $7890282746</span>
-                <span id="player-leaderboard-entry">2. You: $0</span>
-                <span>3. Little Timmy: $0</span>
+            <button class="banana menu-action" id="settings" type="button" onclick="toggleSettings()">settings</button>
+            <div id="settings-panel" aria-live="polite" aria-hidden="true">
+                <strong>settings</strong>
+                <span id="save-status">autosave is on</span>
+                <span id="save-time">no local save yet</span>
+                <div class="settings-actions">
+                    <button class="menu-action" type="button" onclick="saveGame()">save now</button>
+                    <button class="menu-action" type="button" onclick="loadGame()">load save</button>
+                    <button class="menu-action" type="button" onclick="clearSave()">clear save</button>
+                </div>
             </div>
         </div>
 
