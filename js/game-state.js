@@ -56,6 +56,61 @@ export const state = {
     }
 };
 
+const SAVE_KEY = "boba-game-save-v1";
+
+function applySavedState(saved) {
+    if (!saved || typeof saved !== "object") return false;
+    Object.assign(gameState, {
+        brew: { ...gameState.brew, ...(saved.brew || {}) },
+        sell: { ...gameState.sell, ...(saved.sell || {}) },
+        advertise: { ...gameState.advertise, ...(saved.advertise || {}) },
+        machine: { ...gameState.machine, ...(saved.machine || {}) },
+        boba: Number(saved.boba) || 0,
+        bobaValue: Number(saved.bobaValue) || 0.01,
+        money: Number(saved.money) || 0,
+        won: Boolean(saved.won),
+        easterEgg: { ...gameState.easterEgg, ...(saved.easterEgg || {}) }
+    });
+    return true;
+}
+
+export function saveGame() {
+    try {
+        const savedAt = Date.now();
+        localStorage.setItem(SAVE_KEY, JSON.stringify({ version: 1, savedAt, state: gameState }));
+        return savedAt;
+    } catch (error) {
+        console.warn("Could not save boba game locally.", error);
+        return false;
+    }
+}
+
+export function loadGame() {
+    try {
+        const raw = localStorage.getItem(SAVE_KEY);
+        if (!raw) return false;
+        const payload = JSON.parse(raw);
+        return applySavedState(payload?.state) ? (payload.savedAt || Date.now()) : false;
+    } catch (error) {
+        console.warn("Could not load boba game locally.", error);
+        return false;
+    }
+}
+
+export function clearSavedGame() {
+    try { localStorage.removeItem(SAVE_KEY); return true; }
+    catch (error) { console.warn("Could not clear local save.", error); return false; }
+}
+
+export function getSaveInfo() {
+    try {
+        const raw = localStorage.getItem(SAVE_KEY);
+        if (!raw) return null;
+        const payload = JSON.parse(raw);
+        return { savedAt: payload?.savedAt || null, version: payload?.version || 1 };
+    } catch { return null; }
+}
+
 // function to update gamestate, right now just quests and upgrades will use this
 export function updateGameState() {
     // update quest progress
