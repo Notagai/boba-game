@@ -627,3 +627,21 @@ hr {
         animation: none;
     }
 }
+
+
+/* tactile "no" feedback: brief red flash + back-and-forth wobble */
+.action-rejected{animation:noWobble .52s ease both!important;background-color:#e66b5f!important;box-shadow:0 0 0 3px rgba(230,107,95,.28)}
+.action-rejected::after{content:"no";position:absolute;right:-.45rem;top:-.7rem;padding:.12rem .35rem;border-radius:999px;background:#e66b5f;color:#fff4e2;font-size:.75rem;font-weight:bold;pointer-events:none;animation:noLabel .52s ease both}
+@keyframes noWobble{0%,100%{transform:translateX(0) rotate(0)}18%{transform:translateX(-7px) rotate(-2deg)}36%{transform:translateX(7px) rotate(2deg)}54%{transform:translateX(-5px) rotate(-1.5deg)}72%{transform:translateX(4px) rotate(1deg)}}
+@keyframes noLabel{0%,100%{opacity:0;transform:scale(.8)}20%,80%{opacity:1;transform:scale(1)}}
+.orientation-warning{border-radius:8px;outline:3px solid #e66b5f}
+#leaderboard-panel{display:none;gap:.35rem;margin:.5rem 2rem 0;padding:.75rem 1rem;border-radius:6px;background:#a0721c;color:#ffdb9a}
+#leaderboard-panel.open{display:grid}
+#leaderboard-panel span,#leaderboard-panel strong{color:#ffdb9a;font-size:.95rem}
+.menu-action{border:0;background:transparent;color:#ffd079;cursor:pointer;padding:5px;margin:.25rem 2rem}
+.menu-action:hover,.menu-action:focus-visible{color:#ffdb9a;text-decoration:underline}
+.button-wrapper button:focus-visible,.menu-action:focus-visible,.vertical-tab-button:focus-visible{outline:3px solid #5fb8ff;outline-offset:3px}
+#tab-content-area{opacity:0;visibility:hidden;pointer-events:none}
+#tab-content-area.open{opacity:1;visibility:visible;pointer-events:auto}
+@media (max-width:800px){#game-container{grid-template-columns:1fr;width:calc(100vw - 1rem);margin:.5rem auto}#main-game{grid-template-columns:minmax(0,1fr)}#tabs-column-wrapper{grid-column:1;grid-row:2;width:100%;transform:none}#vertical-tabs-container{flex-direction:row;max-width:100%;overflow-x:auto;width:100%}#tab-content-area{position:relative;top:auto;right:auto;left:auto;width:100%;min-height:0;max-height:60vh;margin-top:1rem;transform:none}#console{order:2}#main-game-container{order:1}.tooltip{position:fixed;left:5vw!important;top:auto;bottom:.75rem;transform:none;width:90vw;max-width:22rem}}
+@media (prefers-reduced-motion:reduce){.action-rejected{animation-duration:.01ms!important}.action-rejected::after{animation:none}.boba-bubbles .bubble{animation:none}}
