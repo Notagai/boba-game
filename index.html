@@ -16,13 +16,6 @@
         <script src="https://cdn.jsdelivr.net/npm/canvas-confetti@1.9.4/dist/confetti.browser.min.js"></script>
     </head>
 
-    <div id="boba-popup-overlay">
-        <div id="boba-popup">
-            <p id="boba-popup-text">Popup text here</p>
-            <button id="boba-popup-btn">OK</button>
-        </div>
-    </div>
-
     <body>
         <div id="loading-screen">
             <div class="loading-bubbles">
@@ -40,7 +33,13 @@
 
         <div class="widget-container" id="menu-bar">
             <h3 class="banana">boba game</h3>
-            <h3 class="banana" id="leaderboard" onclick="leaderboard()">leaderboard</h3>
+            <button class="banana menu-action" id="leaderboard" type="button" onclick="leaderboard()">leaderboard</button>
+            <div id="leaderboard-panel" aria-live="polite" aria-hidden="true">
+                <strong>leaderboard</strong>
+                <span>1. Little Ella: $7890282746</span>
+                <span id="player-leaderboard-entry">2. You: $0</span>
+                <span>3. Little Timmy: $0</span>
+            </div>
         </div>
 
         <div class="widget-container" id="quest-bar">
