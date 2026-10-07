@@ -2,9 +2,9 @@
 // it wires up the ui and game logic modules together
 // and initializes the main game buttons
 
-import { gameState as gs, state, updateGameState } from "./game-state.js";
+import { gameState as gs, state, updateGameState, loadGame, saveGame } from "./game-state.js";
 import { get, updateStatus, updateValue, updateProgressBar, flashReject } from "./dom.js";
-import { checkOrientation } from "./ui.js";
+import { checkOrientation, updateSaveStatus } from "./ui.js";
 import { Button } from "./button.js";
 import { updateDescription, currentQuest, createQuests } from "./quest.js";
 import { formatMoney } from "./utils.js";
@@ -138,6 +138,7 @@ export const buyMachineBtn = new Button(
 );
 
 export function initGame() {
+    loadGame();
     wireUiListeners();
     wireWinCondition();
     wireMachineAutomation();
@@ -149,6 +150,9 @@ export function initGame() {
 
     createUpgrades();
     initializeUpgradeButtons();
+    updateSaveStatus();
+    setInterval(saveGame, 10000);
+    window.addEventListener("beforeunload", saveGame);
 }
 
 function wireUiListeners() {
